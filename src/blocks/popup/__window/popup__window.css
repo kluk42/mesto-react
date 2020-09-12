@@ -1,0 +1,15 @@
+.popup__window {
+    width: calc(430/1280*100vw);
+    max-width: 430px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    position: relative;
+}
+
+@media screen and (max-width: 845px) {
+    .popup__window {
+        width: 75%;
+    }
+}/**/
