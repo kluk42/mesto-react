@@ -1,12 +1,15 @@
 import React from 'react';
 
-const ImagePopup = () => {
+const ImagePopup = ({card, isOpen, onClose}) => {
     return (
-        <div className="popup popup_type_picture">
+        <div className={
+            `popup popup_type_picture 
+             ${isOpen && 'popup-opener'}
+            `}>
             <div className="popup__envelope">
-                <button className="close-button popup__close-button" type="button"></button>
-                <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз" className="popup__picture"/>
-                <p className="popup__sign">Архыз</p>
+                <button className="close-button popup__close-button" type="button" onClick={onClose}></button>
+                <img src={card.imgLink} alt={card.description} className="popup__picture"/>
+        <p className="popup__sign">{card.description}</p>
             </div>
         </div>
     )

@@ -1,26 +1,82 @@
-import React from 'react';
-import brushPath from '../../images/brush.svg'
+import React, {useState, useEffect} from 'react';
+import brushPath from '../../images/brush.svg';
+import api from '../../utils/Api';
+import Card from '../Card/Card';
 
-function Main ({onEditProfile, onAddPlace, onEditAvatar}) {
+function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
+    const [userName, setUserName] = useState();
+    const [userDescription, setUserDescription] = useState();
+    const [userAvatar, setUserAvatar] = useState();
+    const [isAvatarHovered, setIsAvatarHovered] = useState(false);
+    const [cards, setCards] = useState([]);
+
+    useEffect(() => {
+        Promise.all([
+            api.getInitialCards(),
+            api.getUserInfo()
+        ]).then(res => {
+            const [initialCards, userData] = res;
+            setUserName(userData.name);
+            setUserDescription(userData.about);
+            setUserAvatar(userData.avatar);
+            const cardsToSet = initialCards.map(item => {
+                const card = {
+                    imgLink: item.link,
+                    name: item.name,
+                    likes: Object.keys(item.likes).length,
+                    cardId: item._id
+                }
+                return card
+            })
+            setCards(cardsToSet);
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }, [])//Эффект для обработки информации с сервера при загрузке страницы
+
+/* Функции рендера кнопки на аватарке */
+    const handleMouseEnterAvatar = () => {
+        setIsAvatarHovered(true);
+    }
+
+    const handleMouseLeaveAvatar = () => {
+        setIsAvatarHovered(false);
+    }
+    
     return (
         <main className="content">
         <section className="profile section">
             <div className="profile-avatar">
-                <img alt="Жак-Ив Кусто" className="profile-avatar"/>
-                <img src={brushPath} alt="Кисточка" className="profile-avatar__brush"/>
+                <img 
+                src={userAvatar} 
+                alt={userName} 
+                className="profile-avatar__image"
+                onMouseEnter={handleMouseEnterAvatar}
+                onMouseLeave={handleMouseLeaveAvatar}
+                />
+                <img 
+                    src={brushPath} 
+                    alt="Кисточка" 
+                    className={`profile-avatar__brush ${isAvatarHovered && 'profile-avatar__brush_state_visible'}`} 
+                    onClick={onEditAvatar}
+                    onMouseEnter={handleMouseEnterAvatar}
+                />
             </div>
             <div className="profile__info">
                 <div className="profile__info-line">
-                    <h2 className="profile__name">Жак-Ив Кусто</h2>
-                    <button className="edit-button profile__edit-button"></button>
+                <h2 className="profile__name">{userName}</h2>
+                    <button className="edit-button profile__edit-button" onClick={onEditProfile}></button>
                 </div>
-                <p className="profile__description">Исследователь океана</p>
+                <p className="profile__description">{userDescription}</p>
             </div>
-            <button className="add-button profile__add-button"></button>
+            <button className="add-button profile__add-button" onClick={onAddPlace}></button>
         </section>
-        <section className="gallery section"></section>
+        <section className="gallery section">
+            {cards.map(card => <Card key={card.cardId} {...card} handleCardClicked={handleCardClicked}/>)}
+        </section>
     </main>
     )
 }
 
-export default {Main};
+export default Main;
