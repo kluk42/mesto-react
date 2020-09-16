@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import brushPath from '../../images/brush.svg';
-import api from '../../utils/Api';
+import api from '../../utils/api.js';
 import Card from '../Card/Card';
 
 function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
@@ -20,13 +20,12 @@ function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
             setUserDescription(userData.about);
             setUserAvatar(userData.avatar);
             const cardsToSet = initialCards.map(item => {
-                const card = {
+                return {
                     imgLink: item.link,
                     name: item.name,
                     likes: Object.keys(item.likes).length,
                     cardId: item._id
                 }
-                return card
             })
             setCards(cardsToSet);
         })
@@ -66,7 +65,7 @@ function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
             <div className="profile__info">
                 <div className="profile__info-line">
                 <h2 className="profile__name">{userName}</h2>
-                    <button className="edit-button profile__edit-button" onClick={onEditProfile}></button>
+                    <button className="edit-button profile__edit-button" onClick={onEditProfile}/>
                 </div>
                 <p className="profile__description">{userDescription}</p>
             </div>

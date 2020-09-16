@@ -13,8 +13,8 @@ function Card ({imgLink, name, likes, handleCardClicked}) {
             <div className="card__bottom">
                 <p className="card__name">{name}</p>
                 <div className="like-section">
-                    <button className="like-button"></button>
-    <p className="like-section__likes-counter">{likes}</p>
+                    <button className="like-button" />
+                    <p className="like-section__likes-counter">{likes}</p>
                 </div>
             </div>
         </div>

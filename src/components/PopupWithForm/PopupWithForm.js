@@ -8,7 +8,7 @@ const PopupWithForm = ({title, name, isOpen, onClose, children}) => {
     `}>
             <div className="popup__window">
               <h2 className="popup__header">{title}</h2>
-              <button className="close-button popup__close-button" type="button" onClick={onClose}></button>
+              <button className="close-button popup__close-button" type="button" onClick={onClose}/>
               <form className="form" name={name} noValidate>
                     {children}
                     <button className="submit-button form__submit-button" type="submit">Сохранить</button>

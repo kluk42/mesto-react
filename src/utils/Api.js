@@ -5,6 +5,12 @@ class Api {
         this._renderLoading = renderLoading;
     }
 
+    _resultsProcessing (res) {
+        if (res.ok) {
+            return res.json()
+        } else {return Promise.reject(`Ошибка: ${res.status}`)}
+    }
+
     getInitialCards () {
         return fetch(`${this._baseUrl}cards`, {
             headers: {
@@ -13,12 +19,7 @@ class Api {
             }
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            } else {return Promise.reject(`Ошибка: ${res.status}`)}
-        })
-        .then(cards => {
-            return cards
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -33,10 +34,7 @@ class Api {
             }
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -59,10 +57,7 @@ class Api {
   })
 })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -82,10 +77,7 @@ class Api {
             },
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -101,10 +93,7 @@ class Api {
             }
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -120,10 +109,7 @@ class Api {
             }
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -144,10 +130,7 @@ class Api {
             })
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)
@@ -167,10 +150,7 @@ class Api {
             })
         })
         .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка: ${res.status}`)
+            return this._resultsProcessing(res)
         })
         .catch((err) => {
             console.log(err)

@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import Header from '../Header/Header.js';
 import Main from '../Main/Main.js';
 import Footer from '../Footer/Footer.js'
-import ImagePopup from '../ImagePopup/ImagePopup'
-import '../../index.css';
+import ImagePopup from '../ImagePopup/ImagePopup.js'
 import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
 
 function App() {
@@ -64,11 +63,27 @@ function App() {
         >
             <fieldset className="form__input-container">
                     <label htmlFor="name-input" className="form__field">
-                        <input type="text" placeholder="Имя пользователя" id="name-input" className="form__item form__item_content_name" required minLength="2" maxLength="40"/>
+                        <input
+                            type="text" 
+                            placeholder="Имя пользователя" 
+                            id="name-input" 
+                            className="form__item form__item_content_name" 
+                            required 
+                            minLength="2" 
+                            maxLength="40"
+                        />
                         <span id="name-input-error" className="form__input-error"></span>
                     </label>
                     <label htmlFor="description-input" className="form__field">
-                        <input type="text" placeholder="Род деятельности" id="description-input" className="form__item form__item_content_description" required minLength="2" maxLength="200"/>
+                        <input 
+                            type="text" 
+                            placeholder="Род деятельности" 
+                            id="description-input" 
+                            className="form__item form__item_content_description" 
+                            required 
+                            minLength="2" 
+                            maxLength="200"
+                        />
                         <span id="description-input-error" className="form__input-error"></span>
                     </label>
                  </fieldset>
@@ -81,11 +96,24 @@ function App() {
             >
                 <fieldset className="form__input-container">
                      <label htmlFor="place-input" className="form__field">
-                        <input type="text" placeholder="Название" id="place-input" className="form__item form__item_content_place-name" required minLength="1"/>
+                        <input 
+                            type="text" 
+                            placeholder="Название" 
+                            id="place-input" 
+                            className="form__item form__item_content_place-name" 
+                            required 
+                            minLength="1"
+                        />
                         <span id="place-input-error" className="form__input-error"></span>
                      </label>
                      <label htmlFor="link-input" className="form__field">
-                        <input type="url" placeholder="Ссылка на картинку" id="link-input" className="form__item form__item_content_link" required/>
+                        <input 
+                            type="url" 
+                            placeholder="Ссылка на картинку" 
+                            id="link-input" 
+                            className="form__item form__item_content_link" 
+                            required
+                        />
                         <span id="link-input-error" className="form__input-error"></span>
                      </label>
                  </fieldset>
@@ -98,7 +126,13 @@ function App() {
             >
                 <fieldset className="form__input-container">
                      <label htmlFor="avatar-input" className="form__field">
-                        <input type="url" placeholder="Ссылка на аватар" id="avatar-input" className="form__item form__item_content_avatar" required/>
+                        <input 
+                            type="url" 
+                            placeholder="Ссылка на аватар" 
+                            id="avatar-input" 
+                            className="form__item form__item_content_avatar" 
+                            required
+                        />
                         <span id="avatar-input-error" className="form__input-error"></span>
                      </label>
                  </fieldset>
@@ -106,7 +140,7 @@ function App() {
      <div className="popup popup_type_confirmation">
         <div className="popup__window">
             <h2 className="popup__header">Вы уверены?</h2>
-            <button className="close-button popup__close-button" type="button"></button>
+            <button className="close-button popup__close-button" type="button"/>
             <form className="form">
                 <button className="submit-button submit-button_confirmation" type="submit">Да</button>
              </form>
