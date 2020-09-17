@@ -170,5 +170,6 @@ const api = new Api({
     token: '614c831a-d135-4d7c-82ff-12ed74000dec',
     renderLoading: renderLoading
 })
+console.log(api)
 
 export default api;
