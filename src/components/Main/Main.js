@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import brushPath from '../../images/brush.svg';
-import api from '../../utils/api.js';
+import api from '../../utils/Api.js';
 import Card from '../Card/Card';
 
 function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
