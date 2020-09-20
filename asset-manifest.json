@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "./static/css/main.8ee3e097.chunk.css",
-    "main.js": "./static/js/main.ca96ce04.chunk.js",
-    "main.js.map": "./static/js/main.ca96ce04.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.a5163ae5.js",
-    "runtime-main.js.map": "./static/js/runtime-main.a5163ae5.js.map",
-    "static/js/2.dfab76b2.chunk.js": "./static/js/2.dfab76b2.chunk.js",
-    "static/js/2.dfab76b2.chunk.js.map": "./static/js/2.dfab76b2.chunk.js.map",
-    "index.html": "./index.html",
-    "precache-manifest.b85d6869d02d49de4e29e4daeb3f5f61.js": "./precache-manifest.b85d6869d02d49de4e29e4daeb3f5f61.js",
-    "service-worker.js": "./service-worker.js",
-    "static/css/main.8ee3e097.chunk.css.map": "./static/css/main.8ee3e097.chunk.css.map",
-    "static/js/2.dfab76b2.chunk.js.LICENSE.txt": "./static/js/2.dfab76b2.chunk.js.LICENSE.txt",
-    "static/media/Bin.svg": "./static/media/Bin.949285d4.svg",
-    "static/media/index.css": "./static/media/active-like.9fdebb6b.svg",
-    "static/media/Lid.svg": "./static/media/Lid.026bd200.svg",
-    "static/media/brush.svg": "./static/media/brush.34c46850.svg",
-    "static/media/header-logo.svg": "./static/media/header-logo.855a8c98.svg"
+    "main.css": "/mesto-react/static/css/main.ade42893.chunk.css",
+    "main.js": "/mesto-react/static/js/main.8957c47b.chunk.js",
+    "main.js.map": "/mesto-react/static/js/main.8957c47b.chunk.js.map",
+    "runtime-main.js": "/mesto-react/static/js/runtime-main.36fb0e45.js",
+    "runtime-main.js.map": "/mesto-react/static/js/runtime-main.36fb0e45.js.map",
+    "static/js/2.dfab76b2.chunk.js": "/mesto-react/static/js/2.dfab76b2.chunk.js",
+    "static/js/2.dfab76b2.chunk.js.map": "/mesto-react/static/js/2.dfab76b2.chunk.js.map",
+    "index.html": "/mesto-react/index.html",
+    "precache-manifest.117305565431f492160da0df6c4c0aab.js": "/mesto-react/precache-manifest.117305565431f492160da0df6c4c0aab.js",
+    "service-worker.js": "/mesto-react/service-worker.js",
+    "static/css/main.ade42893.chunk.css.map": "/mesto-react/static/css/main.ade42893.chunk.css.map",
+    "static/js/2.dfab76b2.chunk.js.LICENSE.txt": "/mesto-react/static/js/2.dfab76b2.chunk.js.LICENSE.txt",
+    "static/media/Bin.svg": "/mesto-react/static/media/Bin.949285d4.svg",
+    "static/media/index.css": "/mesto-react/static/media/active-like.9fdebb6b.svg",
+    "static/media/Lid.svg": "/mesto-react/static/media/Lid.026bd200.svg",
+    "static/media/brush.svg": "/mesto-react/static/media/brush.34c46850.svg",
+    "static/media/header-logo.svg": "/mesto-react/static/media/header-logo.855a8c98.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.a5163ae5.js",
+    "static/js/runtime-main.36fb0e45.js",
     "static/js/2.dfab76b2.chunk.js",
-    "static/css/main.8ee3e097.chunk.css",
-    "static/js/main.ca96ce04.chunk.js"
+    "static/css/main.ade42893.chunk.css",
+    "static/js/main.8957c47b.chunk.js"
   ]
 }
