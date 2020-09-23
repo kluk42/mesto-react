@@ -1,24 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import brushPath from '../../images/brush.svg';
 import api from '../../utils/Api.js';
 import Card from '../Card/Card';
+import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 
 function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
-    const [userName, setUserName] = useState();
-    const [userDescription, setUserDescription] = useState();
-    const [userAvatar, setUserAvatar] = useState();
     const [isAvatarHovered, setIsAvatarHovered] = useState(false);
     const [cards, setCards] = useState([]);
 
-    useEffect(() => {
-        Promise.all([
-            api.getInitialCards(),
-            api.getUserInfo()
-        ]).then(res => {
-            const [initialCards, userData] = res;
-            setUserName(userData.name);
-            setUserDescription(userData.about);
-            setUserAvatar(userData.avatar);
+    const userData = useContext(CurrentUserContext);
+    const getCardsAndUser = async () => {
+        const initialCards = await api.getInitialCards();
+            const userName = userData.name;
+            const userDescription = userData.about;
+            const userAvatar = userData.avatar;
             const cardsToSet = initialCards.map(item => {
                 return {
                     imgLink: item.link,
@@ -28,10 +23,10 @@ function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
                 }
             })
             setCards(cardsToSet);
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+    }
+
+    useEffect(() => {
+        getCardsAndUser()
     }, [])//Эффект для обработки информации с сервера при загрузке страницы
 
 /* Функции рендера кнопки на аватарке */

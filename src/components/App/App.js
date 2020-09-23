@@ -1,16 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../Header/Header.js';
 import Main from '../Main/Main.js';
 import Footer from '../Footer/Footer.js'
 import ImagePopup from '../ImagePopup/ImagePopup.js'
 import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
+import api from '../../utils/Api.js';
+import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 
 function App() {
+    const [currentUser, setCurrentUser] = useState({});
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [isImgPopupOpen, setIsImgPopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({});
+    console.log(currentUser)
+    const getUserInfo = async () => {
+        const userInfo = await api.getUserInfo();
+        //console.log(userInfo)
+        setCurrentUser(userInfo);
+    }
+
+    useEffect (() => {
+        getUserInfo()
+        //console.log(currentUser)
+    }, [])
 
     const handleEditProfileButton = () => {
         setIsEditProfilePopupOpen(true);
@@ -42,26 +56,27 @@ function App() {
 
   return (
     <div className="root">
-        <Header />
-        <Main
+        <CurrentUserContext.Provider value={currentUser}>
+            <Header />
+            <Main
             onEditProfile={handleEditProfileButton}
             onAddPlace={handleAddPlaceButton}
             onEditAvatar={handleEditAvatarButton}
             handleCardClicked={handleCardClicked}
-        />
-        <Footer />
-        <ImagePopup 
-        card = {selectedCard}
-        isOpen = {isImgPopupOpen}
-        onClose = {closeAllPopups}
-        />
-        <PopupWithForm 
+            />
+            <Footer />
+            <ImagePopup 
+            card = {selectedCard}
+            isOpen = {isImgPopupOpen}
+            onClose = {closeAllPopups}
+            />
+            <PopupWithForm 
             title = 'Редактировать профиль'
             name = 'profile'
             isOpen = {isEditProfilePopupOpen}
             onClose={closeAllPopups}
-        >
-            <fieldset className="form__input-container">
+            >
+                <fieldset className="form__input-container">
                     <label htmlFor="name-input" className="form__field">
                         <input
                             type="text" 
@@ -86,9 +101,9 @@ function App() {
                         />
                         <span id="description-input-error" className="form__input-error"></span>
                     </label>
-                 </fieldset>
-        </PopupWithForm>
-        <PopupWithForm 
+                </fieldset>
+            </PopupWithForm>
+            <PopupWithForm 
             title = 'Новое место'
             name = 'editor'
             isOpen = {isAddPlacePopupOpen}
@@ -117,8 +132,8 @@ function App() {
                         <span id="link-input-error" className="form__input-error"></span>
                      </label>
                  </fieldset>
-        </PopupWithForm>
-        <PopupWithForm 
+            </PopupWithForm>
+            <PopupWithForm 
             title = 'Обновить аватар'
             name = 'avatar'
             isOpen = {isEditAvatarPopupOpen}
@@ -137,6 +152,7 @@ function App() {
                      </label>
                  </fieldset>
             </PopupWithForm>
+        </CurrentUserContext.Provider>
      <div className="popup popup_type_confirmation">
         <div className="popup__window">
             <h2 className="popup__header">Вы уверены?</h2>
