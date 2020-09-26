@@ -43,8 +43,6 @@ class Api {
 
     sendUserInfo(data) {
         this._renderLoading(true);
-        this._nameKey = 'name-input';
-        this._descriptionInput = 'description-input'
         return fetch(`${this._baseUrl}users/me`, {
             method: 'PATCH',
             headers: {
@@ -52,11 +50,12 @@ class Api {
                 'Content-Type': 'application/json'
         },
             body: JSON.stringify({
-            name: data[this._nameKey],
-            about: data[this._descriptionInput]
+            name: data.newName,
+            about: data.about
   })
 })
         .then(res => {
+            this._renderLoading(false)
             return this._resultsProcessing(res)
         })
         .catch((err) => {
@@ -130,6 +129,7 @@ class Api {
             })
         })
         .then(res => {
+            this._renderLoading(false)
             return this._resultsProcessing(res)
         })
         .catch((err) => {
@@ -150,6 +150,7 @@ class Api {
             })
         })
         .then(res => {
+            this._renderLoading(false)
             return this._resultsProcessing(res)
         })
         .catch((err) => {

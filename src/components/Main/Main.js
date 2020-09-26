@@ -1,33 +1,12 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import brushPath from '../../images/brush.svg';
-import api from '../../utils/Api.js';
 import Card from '../Card/Card';
 import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 
-function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
+function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked, onCardLike, onCardDelete, cards}) {
     const [isAvatarHovered, setIsAvatarHovered] = useState(false);
-    const [cards, setCards] = useState([]);
 
-    const userData = useContext(CurrentUserContext);
-    const getCardsAndUser = async () => {
-        const initialCards = await api.getInitialCards();
-            const userName = userData.name;
-            const userDescription = userData.about;
-            const userAvatar = userData.avatar;
-            const cardsToSet = initialCards.map(item => {
-                return {
-                    imgLink: item.link,
-                    name: item.name,
-                    likes: Object.keys(item.likes).length,
-                    cardId: item._id
-                }
-            })
-            setCards(cardsToSet);
-    }
-
-    useEffect(() => {
-        getCardsAndUser()
-    }, [])//Эффект для обработки информации с сервера при загрузке страницы
+    const currentUser = useContext(CurrentUserContext);//Подписка на данные о пользователе
 
 /* Функции рендера кнопки на аватарке */
     const handleMouseEnterAvatar = () => {
@@ -43,8 +22,8 @@ function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
         <section className="profile section">
             <div className="profile-avatar">
                 <img 
-                src={userAvatar} 
-                alt={userName} 
+                src={currentUser.avatar}
+                alt={currentUser.name}
                 className="profile-avatar__image"
                 onMouseEnter={handleMouseEnterAvatar}
                 onMouseLeave={handleMouseLeaveAvatar}
@@ -59,15 +38,15 @@ function Main ({onEditProfile, onAddPlace, onEditAvatar, handleCardClicked}) {
             </div>
             <div className="profile__info">
                 <div className="profile__info-line">
-                <h2 className="profile__name">{userName}</h2>
+                <h2 className="profile__name">{currentUser.name}</h2>
                     <button className="edit-button profile__edit-button" onClick={onEditProfile}/>
                 </div>
-                <p className="profile__description">{userDescription}</p>
+                <p className="profile__description">{currentUser.about}</p>
             </div>
             <button className="add-button profile__add-button" onClick={onAddPlace}></button>
         </section>
         <section className="gallery section">
-            {cards.map(card => <Card key={card.cardId} {...card} handleCardClicked={handleCardClicked}/>)}
+            {cards.map(card => <Card key={card.cardId} {...card} c={card} handleCardClicked={handleCardClicked} onCardLike={onCardLike} onCardDelete={onCardDelete}/>)}
         </section>
     </main>
     )
