@@ -3,22 +3,61 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 
 function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
-    const [name, setName] = useState('');
-    const [userDescription, setUserDescription] = useState('');
+    const [inputValue, setInputValue] = useState({
+        userName: '',
+        userDescription: ''
+    })
+    const [isValid, setIsValid] = useState({
+        userName: true,
+        userDescription: true
+    })
+    const [hasInvalid, setHasInvalid] = useState(false);
+    const [validationMessage, setValidationMessage] = useState({
+        userName: '',
+        userDescription: ''
+    });
+
     const currentUser = useContext(CurrentUserContext);
     
-    const handleNameChange = (evt) => {
-        setName(evt.target.value)
-    }
+    const handleInput = (evt) => {
+        const {name, value, validity} = evt.target;
+        
+        setInputValue({
+            ...inputValue,
+            [name]: value
+        })
 
-    const handleUserDescriptionChange = (evt) => {
-        setUserDescription(evt.target.value)
+        setIsValid({
+            ...isValid,
+            [name]:validity.valid
+        })
+
+        setValidationMessage({
+            ...validationMessage,
+            [name]:evt.target.validationMessage
+        });
     }
 
     useEffect(() => {
-        setName(currentUser.name);
-        setUserDescription(currentUser.about);
-      }, [currentUser]);
+        (isValid.userName && isValid.userDescription) ? setHasInvalid(false) : setHasInvalid(true)
+    }, [inputValue])
+
+    useEffect(() => {
+        setInputValue({
+            ...inputValue,
+            userName: currentUser.name,
+            userDescription: currentUser.about
+        })
+
+        setIsValid({
+            ...isValid,
+            userName: true,
+            userDescription: true
+        })
+      }, [currentUser, isOpen]); /* Стэйт имени и описания меняется при загрузке данных о пользователе с сервера. 
+      При закрытии попапа значения в строках формы снова сбрасываются на те, которые находятся на сервере.
+      Форма в данном случае валидна по дефолту, т.к. обе строки заполнены, значениями, которые прошли валидацию
+      и были отправлены на сервер */
 
       const handleSubmit = (evt) => {
         // Запрещаем браузеру переходить по адресу формы
@@ -26,10 +65,10 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
       
         // Передаём значения управляемых компонентов во внешний обработчик
         onUpdateUser({
-          newName: name,
-          about: userDescription,
+          newName: inputValue.userName,
+          about: inputValue.userDescription,
         });
-      } 
+      }
 
     return(
         <PopupWithForm 
@@ -38,33 +77,44 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
                 isOpen = {isOpen}
                 onClose={onClose}
                 onSubmit={handleSubmit}
+                hasInvalid={hasInvalid}
                 >
                     <fieldset className="form__input-container">
                         <label htmlFor="name-input" className="form__field">
                             <input
-                                type="text" 
-                                placeholder="Имя пользователя" 
+                                type="text"
+                                name="userName"
+                                placeholder="Имя пользователя"
                                 id="name-input" 
                                 className="form__item form__item_content_name" 
-                                required 
+                                required
                                 minLength="2" 
                                 maxLength="40"
-                                onChange={handleNameChange}
+                                onChange={handleInput}
+                                value={inputValue.userName}
                             />
-                            <span id="name-input-error" className="form__input-error"></span>
+                            <span id="name-input-error"
+                            className={`form__input-error ${isValid.userName ? '' : 'form__input-error_active'}`}>
+                                {validationMessage.userName}
+                            </span>
                         </label>
                         <label htmlFor="description-input" className="form__field">
                             <input 
-                                type="text" 
+                                type="text"
+                                name="userDescription"
                                 placeholder="Род деятельности" 
                                 id="description-input" 
                                 className="form__item form__item_content_description" 
-                                required 
+                                required
                                 minLength="2" 
                                 maxLength="200"
-                                onChange={handleUserDescriptionChange}
+                                onChange={handleInput}
+                                value={inputValue.userDescription}
                             />
-                            <span id="description-input-error" className="form__input-error"></span>
+                            <span id="description-input-error"
+                            className={`form__input-error ${isValid.userDescription ? '' : 'form__input-error_active'}`}>
+                                {validationMessage.userDescription}
+                            </span>
                         </label>
                     </fieldset>
                 </PopupWithForm>

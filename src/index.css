@@ -13,7 +13,9 @@
 @import url(./blocks/like-button/_state/_active/like-button_state_active.css);
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/popup/popup.css);
+@import url(./blocks/form/__item/_type/_error/form__item_type_error.css);
 @import url(./blocks/form/form.css);
+@import url(./blocks/form/__item/form__item.css);
 @import url(./blocks/close-button/close-button.css);
 @import url(./blocks/submit-button/submit-button.css);
 @import url(./blocks/submit-button/_disabled/submit-button_disabled.css);

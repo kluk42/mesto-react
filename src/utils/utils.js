@@ -1,5 +1,4 @@
 const cardsFromServerReprocessor = (card, user) => {
-    console.log(user)
     return {
         imgLink: card.link,
         name: card.name,

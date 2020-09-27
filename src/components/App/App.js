@@ -77,7 +77,6 @@ function App() {
         // Отправляем запрос в API и получаем обновлённые данные карточки
         const newCardFromServer = card.isLiked ? await api.dislikeCard(card.cardId) : await api.likeCard(card.cardId);
         const newCard = cardsFromServerReprocessor(newCardFromServer, currentUser)
-        console.log(newCard)
         
         const newCards = cards.map((c) => {
             const cardToReturn = c.cardId === card.cardId ? newCard : c;
