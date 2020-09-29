@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
 function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
+    const [isLoading, setIsLoading] = useState(false);
+
     const [inputValue, setInputValue] = useState({
         placeName: '',
         imgLink: ''
@@ -18,7 +20,6 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
 
     const handleInput = (evt) => {
         const {name, value, validity} = evt.target;
-        console.log('bang')
         
         setInputValue({
             ...inputValue,
@@ -65,12 +66,16 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
     const handleSubmit = (evt) => {
         // Запрещаем браузеру переходить по адресу формы
         evt.preventDefault();
+
+        setIsLoading(true)
       
         // Передаём значения управляемых компонентов во внешний обработчик
         onAddPlace({
           link: inputValue.imgLink,
           name: inputValue.placeName
         });
+
+        setIsLoading(false)
       }
 
     return (
@@ -81,6 +86,8 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
                 onClose={onClose}
                 onSubmit={handleSubmit}
                 hasInvalid={hasInvalid}
+                buttonTitle='Сохранить'
+                isLoading={isLoading}
                 >
                     <fieldset className="form__input-container">
                         <label htmlFor="place-input" className="form__field">

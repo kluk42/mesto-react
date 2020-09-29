@@ -6,6 +6,7 @@ import ImagePopup from '../ImagePopup/ImagePopup.js'
 import EditProfilePopup from '../EditProfilePopup/EditProfilePopup';
 import EditAvatarPopup from '../EditAvatarPopup/EditAvatarPopup';
 import AddPlacePopup from '../AddPlacePopup/AddPlacePopup';
+import ConfirmationPopup from '../ConfirmationPopup/ConfirmationPopup';
 import api from '../../utils/Api.js';
 import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 import {CardsContext} from '../Contexts/CardsContext';
@@ -16,6 +17,7 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+    const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
     const [isImgPopupOpen, setIsImgPopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({});
     const [cards, setCards] = useState([]);
@@ -35,14 +37,17 @@ function App() {
 
     const handleEditProfileButton = () => {
         setIsEditProfilePopupOpen(true);
+        window.addEventListener('keydown',  handleEscClose)
     }
 
     const handleAddPlaceButton = () => {
         setIsAddPlacePopupOpen(true);
+        window.addEventListener('keydown',  handleEscClose)
     }
 
     const handleEditAvatarButton = () => {
         setIsEditAvatarPopupOpen(true);
+        window.addEventListener('keydown',  handleEscClose)
     }
 
     const closeAllPopups = () => {
@@ -50,6 +55,14 @@ function App() {
         setIsAddPlacePopupOpen(false);
         setIsEditAvatarPopupOpen(false);
         setIsImgPopupOpen(false);
+        setIsConfirmationPopupOpen(false);
+        window.removeEventListener('keydown', handleEscClose);
+    }
+
+    const handleEscClose = (evt) => {
+        if (evt.key === 'Escape') {
+            closeAllPopups()
+        }
     }
 
     const handleCardClicked = (evt) => {
@@ -59,6 +72,7 @@ function App() {
         }
         setSelectedCard(card);
         setIsImgPopupOpen(true);
+        window.addEventListener('keydown',  handleEscClose)
     }
 
     const onUpdateUser = async (userData) => {
@@ -85,18 +99,23 @@ function App() {
         setCards(newCards);
     }
 
-    const onCardDelete = async (card) => {
-        await api.deleteCard(card.cardId);
+    const cardDelete = async (id) => {
+        await api.deleteCard(id);
         const newCards = cards.filter(item => {
-            return item.cardId !== card.cardId
+            return item.cardId !== id
         })
         setCards(newCards)
+    }
+
+    const onCardDelete = (card) => {
+        setSelectedCard(card);
+        setIsConfirmationPopupOpen(true);
     }
 
     const handleAddPlaceSubmit = async (card) => {
         const newCard = await api.uploadCard(card);
         const cardToSet = cardsFromServerReprocessor(newCard, currentUser);
-        setCards([...cards, cardToSet])
+        setCards([cardToSet, ...cards])
         setIsAddPlacePopupOpen(false)
     }
 
@@ -123,17 +142,14 @@ function App() {
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={onUpdateUser} /> 
                 <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
                 <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={onUpdateAvatar} />
+                <ConfirmationPopup 
+                isOpen={isConfirmationPopupOpen} 
+                onClose={closeAllPopups} 
+                cardId={selectedCard.cardId} 
+                action={cardDelete}
+                />
             </CardsContext.Provider>
         </CurrentUserContext.Provider>
-     <div className="popup popup_type_confirmation">
-        <div className="popup__window">
-            <h2 className="popup__header">Вы уверены?</h2>
-            <button className="close-button popup__close-button" type="button"/>
-            <form className="form">
-                <button className="submit-button submit-button_confirmation" type="submit">Да</button>
-             </form>
-        </div>
-     </div>
     </div>
   );
 }

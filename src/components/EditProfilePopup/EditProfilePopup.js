@@ -3,6 +3,8 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 
 function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
+    const [isLoading, setIsLoading] = useState(false);
+
     const [inputValue, setInputValue] = useState({
         userName: '',
         userDescription: ''
@@ -45,8 +47,8 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
     useEffect(() => {
         setInputValue({
             ...inputValue,
-            userName: currentUser.name,
-            userDescription: currentUser.about
+            userName: currentUser.name || '',
+            userDescription: currentUser.about || ''
         })
 
         setIsValid({
@@ -62,12 +64,16 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
       const handleSubmit = (evt) => {
         // Запрещаем браузеру переходить по адресу формы
         evt.preventDefault();
+
+        setIsLoading(true)
       
         // Передаём значения управляемых компонентов во внешний обработчик
         onUpdateUser({
           newName: inputValue.userName,
           about: inputValue.userDescription,
         });
+
+        setIsLoading(false)
       }
 
     return(
@@ -78,6 +84,8 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
                 onClose={onClose}
                 onSubmit={handleSubmit}
                 hasInvalid={hasInvalid}
+                isLoading={isLoading}
+                buttonTitle='Сохранить'
                 >
                     <fieldset className="form__input-container">
                         <label htmlFor="name-input" className="form__field">

@@ -1,8 +1,7 @@
 class Api {
-    constructor({ baseUrl, token, renderLoading}) {
+    constructor({ baseUrl, token}) {
         this._baseUrl = baseUrl;
         this._token = token;
-        this._renderLoading = renderLoading;
     }
 
     _resultsProcessing (res) {
@@ -42,7 +41,6 @@ class Api {
     }
 
     sendUserInfo(data) {
-        this._renderLoading(true);
         return fetch(`${this._baseUrl}users/me`, {
             method: 'PATCH',
             headers: {
@@ -55,7 +53,6 @@ class Api {
   })
 })
         .then(res => {
-            this._renderLoading(false)
             return this._resultsProcessing(res)
         })
         .catch((err) => {
@@ -116,7 +113,6 @@ class Api {
     }
 
     uploadCard (card) {
-        this._renderLoading(true);
         return fetch(`${this._baseUrl}cards`, {
             method: 'POST',
             headers: {
@@ -129,7 +125,6 @@ class Api {
             })
         })
         .then(res => {
-            this._renderLoading(false)
             return this._resultsProcessing(res)
         })
         .catch((err) => {
@@ -138,7 +133,6 @@ class Api {
     }
 
     uploadAvatar (avatarLink) {
-        this._renderLoading(true);
         return fetch(`${this._baseUrl}users/me/avatar`, {
             method: 'PATCH',
             headers: {
@@ -150,7 +144,6 @@ class Api {
             })
         })
         .then(res => {
-            this._renderLoading(false)
             return this._resultsProcessing(res)
         })
         .catch((err) => {
@@ -159,17 +152,9 @@ class Api {
     }
 }
 
-const renderLoading = loading => {
-    const activePopup = document.querySelector('.popup-opener');
-    const button = activePopup.querySelector('.submit-button');
-
-    button.textContent = loading ? 'Сохранение...' : 'Сохранить';
-}
-
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-14/',
     token: '614c831a-d135-4d7c-82ff-12ed74000dec',
-    renderLoading: renderLoading
 })
 
 export default api;
