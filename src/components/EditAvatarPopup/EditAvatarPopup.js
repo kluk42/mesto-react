@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
-function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
+function EditAvatarPopup({isOpen, onClose, onUpdateAvatar, clickPopupOverlay}) {
     const [inputValue, setInputValue] = useState({
         avatarLink: ''
     })
@@ -34,7 +34,7 @@ function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
 
     useEffect(() => {
         isValid.avatarLink ? setHasInvalid(false) : setHasInvalid(true)
-    }, [inputValue])
+    }, [isValid])
 
     useEffect(() => {
         setInputValue({
@@ -71,6 +71,8 @@ function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
                 onClose={onClose}
                 onSubmit={handleSubmit}
                 hasInvalid={hasInvalid}
+                clickPopupOverlay={clickPopupOverlay}
+                buttonTitle='Сохранить'
                 >
                     <fieldset className="form__input-container">
                         <label htmlFor="avatar-input" className="form__field">

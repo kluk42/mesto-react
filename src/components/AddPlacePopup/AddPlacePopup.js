@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
-function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
+function AddPlacePopup ({isOpen, onClose, onAddPlace, clickPopupOverlay}) {
     const [isLoading, setIsLoading] = useState(false);
 
     const [inputValue, setInputValue] = useState({
@@ -39,7 +39,7 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
 
     useEffect(() => {
         (isValid.placeName && isValid.imgLink) ? setHasInvalid(false) : setHasInvalid(true)
-    }, [inputValue])
+    }, [isValid])
 
     useEffect(() => {
         
@@ -88,6 +88,7 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
                 hasInvalid={hasInvalid}
                 buttonTitle='Сохранить'
                 isLoading={isLoading}
+                clickPopupOverlay={clickPopupOverlay}
                 >
                     <fieldset className="form__input-container">
                         <label htmlFor="place-input" className="form__field">

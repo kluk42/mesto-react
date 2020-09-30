@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ImagePopup = ({card, isOpen, onClose}) => {
+const ImagePopup = ({card, isOpen, onClose, clickPopupOverlay}) => {
     return (
-        <div className={`popup popup_type_picture ${isOpen && 'popup-opener'}`}>
+        <div className={`popup popup_type_picture ${isOpen && 'popup-opener'}`} onClick={clickPopupOverlay} >
             <div className="popup__envelope">
                 <button className="close-button popup__close-button" type="button" onClick={onClose} />
                 <img src={card.imgLink} alt={card.description} className="popup__picture"/>

@@ -20,9 +20,6 @@ class Api {
         .then(res => {
             return this._resultsProcessing(res)
         })
-        .catch((err) => {
-            console.log(err)
-        })
     }
 
     getUserInfo () {
@@ -34,9 +31,6 @@ class Api {
         })
         .then(res => {
             return this._resultsProcessing(res)
-        })
-        .catch((err) => {
-            console.log(err)
         })
     }
 
@@ -55,13 +49,6 @@ class Api {
         .then(res => {
             return this._resultsProcessing(res)
         })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
-    getCardId(card) {
-        this._cardId = card._id;
     }
 
     deleteCard (id) {
@@ -74,9 +61,6 @@ class Api {
         })
         .then(res => {
             return this._resultsProcessing(res)
-        })
-        .catch((err) => {
-            console.log(err)
         })
     }
 
@@ -91,9 +75,6 @@ class Api {
         .then(res => {
             return this._resultsProcessing(res)
         })
-        .catch((err) => {
-            console.log(err)
-        })
     }
 
     dislikeCard (id) {
@@ -106,9 +87,6 @@ class Api {
         })
         .then(res => {
             return this._resultsProcessing(res)
-        })
-        .catch((err) => {
-            console.log(err)
         })
     }
 
@@ -127,9 +105,6 @@ class Api {
         .then(res => {
             return this._resultsProcessing(res)
         })
-        .catch((err) => {
-            console.log(err)
-        })
     }
 
     uploadAvatar (avatarLink) {
@@ -145,9 +120,6 @@ class Api {
         })
         .then(res => {
             return this._resultsProcessing(res)
-        })
-        .catch((err) => {
-            console.log(err)
         })
     }
 }

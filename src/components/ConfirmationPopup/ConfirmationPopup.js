@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm'
 
-function ConfirmationPopup ({isOpen, onClose, cardId, action}) {
+function ConfirmationPopup ({isOpen, onClose, cardId, action, clickPopupOverlay}) {
     const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit = (evt) => {
@@ -22,6 +22,7 @@ function ConfirmationPopup ({isOpen, onClose, cardId, action}) {
             hasInvalid={false}
             isLoading={isLoading}
             buttonTitle='Да'
+            clickPopupOverlay={clickPopupOverlay}
         >
         </PopupWithForm>
     )

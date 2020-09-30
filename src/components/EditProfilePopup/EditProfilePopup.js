@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 
-function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
+function EditProfilePopup ({isOpen, onClose, onUpdateUser, clickPopupOverlay}) {
     const [isLoading, setIsLoading] = useState(false);
 
     const [inputValue, setInputValue] = useState({
@@ -42,7 +42,7 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
 
     useEffect(() => {
         (isValid.userName && isValid.userDescription) ? setHasInvalid(false) : setHasInvalid(true)
-    }, [inputValue])
+    }, [inputValue, isValid, hasInvalid])
 
     useEffect(() => {
         setInputValue({
@@ -56,7 +56,7 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
             userName: true,
             userDescription: true
         })
-      }, [currentUser, isOpen]); /* Стэйт имени и описания меняется при загрузке данных о пользователе с сервера. 
+      }, [isOpen, currentUser]); /* Стэйт имени и описания меняется при загрузке данных о пользователе с сервера. 
       При закрытии попапа значения в строках формы снова сбрасываются на те, которые находятся на сервере.
       Форма в данном случае валидна по дефолту, т.к. обе строки заполнены, значениями, которые прошли валидацию
       и были отправлены на сервер */
@@ -86,6 +86,7 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
                 hasInvalid={hasInvalid}
                 isLoading={isLoading}
                 buttonTitle='Сохранить'
+                clickPopupOverlay={clickPopupOverlay}
                 >
                     <fieldset className="form__input-container">
                         <label htmlFor="name-input" className="form__field">
