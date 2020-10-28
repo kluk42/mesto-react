@@ -26,7 +26,6 @@ function App() {
         const getUserAndCards =  async () => {
             try {
                 const userInfo = await api.getUserInfo();
-                console.log(userInfo.avatar)
                 const cardsFromServer = await api.getInitialCards();
                 const cardsToSet = cardsFromServer.map(item => {
                     return cardsFromServerReprocessor(item, userInfo)
@@ -72,6 +71,7 @@ function App() {
 
     const clickPopupOverlay= (evt) => {
         if (evt.target.classList.contains('popup')) {
+            console.log('bang')
             closeAllPopups()
         }
     }
