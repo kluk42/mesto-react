@@ -22,7 +22,33 @@
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "overrides": [
+      {
+        "files": [
+          "**/*.js?(x)"
+        ],
+        "rules": {
+          "no-underscore-dangle": [
+            "error",
+            {
+              "allow": [
+                "_id"
+              ]
+            }
+          ],
+          "linebreak-style": [
+            "error",
+            "windows"
+          ],
+          "indent": [
+            "error",
+            4
+          ],
+          "no-console": "off"
+        }
+      }
+    ]
   },
   "browserslist": {
     "production": [

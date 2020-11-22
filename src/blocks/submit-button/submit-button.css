@@ -5,7 +5,7 @@
     border-radius: 2px;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
     width: 100%;
-    height: calc(50.15/1280*100vw);
+    height: calc(50/1280*100vw);
     max-height: 50.15px;
     border: none;
     color: white;

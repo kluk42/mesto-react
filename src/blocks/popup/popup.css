@@ -4,6 +4,8 @@
 @import url(./__sign/popup__pic-sign.css);
 @import url(./__header/popup__header.css);
 @import url(./__window/popup__window.css);
+@import url(./__img-status/popup__img-status.css);
+@import url(./__text-status/popup__text-status.css);
 
 .popup {
     position: fixed;

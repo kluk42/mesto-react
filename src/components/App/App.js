@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
+
 import Header from '../Header/Header.js';
 import Main from '../Main/Main.js';
 import Footer from '../Footer/Footer.js'
@@ -10,7 +12,11 @@ import ConfirmationPopup from '../ConfirmationPopup/ConfirmationPopup';
 import api from '../../utils/Api.js';
 import {CurrentUserContext} from '../Contexts/CurrentUserContext';
 import {CardsContext} from '../Contexts/CardsContext';
-import {cardsFromServerReprocessor} from '../../utils/utils'
+import {cardsFromServerReprocessor} from '../../utils/utils';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import Authorization from '../Authorization/Authorization.js';
+import Registration from '../Registration/Registration.js';
+import { authorization } from '../Auth/Auth';
 
 function App() {
     const [currentUser, setCurrentUser] = useState({});
@@ -21,6 +27,28 @@ function App() {
     const [isImgPopupOpen, setIsImgPopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({});
     const [cards, setCards] = useState([]);
+    const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+    const [ headerLink, setHeaderLink ] = useState({to:'', linkText:''});
+    const [ userEmail, setUserEmail ] = useState('');
+    const history = useHistory();
+
+    useEffect (() => {
+        const tokenValidator = async () => {
+            const localToken = localStorage.getItem('token');
+            const response = await authorization(localToken);
+            const authorizationResult = await response.json();
+            if (typeof authorizationResult.message === 'undefined') {
+                setIsLoggedIn(true);
+                setUserEmail(authorizationResult.data.email);
+                setHeaderLink({
+                    ...headerLink,
+                    linkText: 'Выйти',
+                });
+                history.push('/');
+            }
+        }
+        tokenValidator();
+    }, [])
 
     useEffect (() => {
         const getUserAndCards =  async () => {
@@ -71,7 +99,6 @@ function App() {
 
     const clickPopupOverlay= (evt) => {
         if (evt.target.classList.contains('popup')) {
-            console.log('bang')
             closeAllPopups()
         }
     }
@@ -155,41 +182,77 @@ function App() {
         setIsAddPlacePopupOpen(false)
     }
 
-  return (
-    <div className="root">
-        <CurrentUserContext.Provider value={currentUser}>
-            <CardsContext.Provider value={cards}>
-                <Header />
-                <Main
-                onEditProfile={handleEditProfileButton}
-                onAddPlace={handleAddPlaceButton}
-                onEditAvatar={handleEditAvatarButton}
-                handleCardClicked={handleCardClicked}
-                cards={cards}
-                onCardLike={handleCardLike}
-                onCardDelete={onCardDelete}
-                />
-                <Footer />
-                <ImagePopup 
-                card = {selectedCard}
-                isOpen = {isImgPopupOpen}
-                onClose = {closeAllPopups}
-                clickPopupOverlay={clickPopupOverlay}
-                />
-                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={onUpdateUser} clickPopupOverlay={clickPopupOverlay} /> 
-                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} clickPopupOverlay={clickPopupOverlay} />
-                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={onUpdateAvatar} clickPopupOverlay={clickPopupOverlay} />
-                <ConfirmationPopup 
-                isOpen={isConfirmationPopupOpen} 
-                onClose={closeAllPopups} 
-                cardId={selectedCard.cardId} 
-                action={cardDelete}
-                clickPopupOverlay={clickPopupOverlay}
-                />
-            </CardsContext.Provider>
-        </CurrentUserContext.Provider>
-    </div>
-  );
+    const headerLinkSetter = (link) => {
+        setHeaderLink({
+            ...headerLink,
+            to: link.to,
+            linkText: link.linkText
+        })
+    }
+
+    const onLogin = (email) => {
+        setIsLoggedIn(true);
+        setUserEmail(email);
+        setHeaderLink({
+            ...headerLink,
+            linkText: 'Выйти',
+        })
+        history.push('/');
+    }
+
+    const handleLogOutButton = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        history.push('/sign-in');
+    }
+
+    return (
+        <div className="root">
+            <CurrentUserContext.Provider value={currentUser}>
+                <CardsContext.Provider value={cards}>
+                    <Switch>
+                        <ProtectedRoute loggedIn={isLoggedIn} exact path="/">
+                            <Header link={headerLink} email={userEmail} handleLogoutBtn={handleLogOutButton} />
+                            <Main
+                                onEditProfile={handleEditProfileButton}
+                                onAddPlace={handleAddPlaceButton}
+                                onEditAvatar={handleEditAvatarButton}
+                                handleCardClicked={handleCardClicked}
+                                cards={cards}
+                                onCardLike={handleCardLike}
+                                onCardDelete={onCardDelete}
+                            />
+                            <ImagePopup 
+                                card = {selectedCard}
+                                isOpen = {isImgPopupOpen}
+                                onClose = {closeAllPopups}
+                                clickPopupOverlay={clickPopupOverlay}
+                            />
+                            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={onUpdateUser} clickPopupOverlay={clickPopupOverlay} /> 
+                            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} clickPopupOverlay={clickPopupOverlay} />
+                            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={onUpdateAvatar} clickPopupOverlay={clickPopupOverlay} />
+                            <ConfirmationPopup 
+                                isOpen={isConfirmationPopupOpen} 
+                                onClose={closeAllPopups} 
+                                cardId={selectedCard.cardId} 
+                                action={cardDelete}
+                                clickPopupOverlay={clickPopupOverlay}
+                            />
+                            <Footer />
+                        </ProtectedRoute>
+                        <Route path="/sign-in">
+                            <Header link={headerLink} />
+                            <Authorization isLoggedIn={isLoggedIn} onLogin={onLogin} headerLinkSetter={headerLinkSetter} />
+                        </Route>
+                        <Route path="/sign-up">
+                            <Header link={headerLink} />
+                            <Registration headerLinkSetter={headerLinkSetter} />
+                        </Route>
+                    </Switch>
+                </CardsContext.Provider>
+            </CurrentUserContext.Provider>
+        </div>
+    );
 }
 
 export default App;
